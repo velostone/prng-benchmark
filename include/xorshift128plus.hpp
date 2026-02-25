@@ -24,5 +24,5 @@ public:
 	}
 
 private:
-	std::uint64_t state[0];
+	std::uint64_t state[2];
 };
