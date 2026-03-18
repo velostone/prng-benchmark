@@ -8,7 +8,7 @@
 #include "mcml_mcg59.h"
 #include "splitmix64.hpp"
 
-#define LATENCY
+#define THROUGHPUT
 
 #define MCG59_C     302875106592253
 #define MCG59_M     576460752303423488
@@ -61,7 +61,7 @@ static void taus88_bm(benchmark::State& state) {
 
 static void taus88_throughput(benchmark::State& state) {
 
-  boost::random::mt11213b taus88(seed);
+  boost::random::taus88 taus88(seed);
   std::vector<uint64_t> buffer(N);
 
   for (auto _ : state) {
@@ -87,7 +87,7 @@ static void mt19937_bm(benchmark::State& state) {
 
 static void mt19937_throughput(benchmark::State& state) {
 
-  boost::random::mt11213b mt19937(seed);
+  std::mt19937 mt19937(seed);
   std::vector<uint64_t> buffer(N);
 
   for (auto _ : state) {
@@ -179,7 +179,7 @@ BENCHMARK(xorshift128plus_bm);
 BENCHMARK(mcg59_bm);
 #endif
 
-#ifdef PERF
+#ifdef THROUGHPUT
 BENCHMARK(mt11213b_throughput);
 BENCHMARK(taus88_throughput);
 BENCHMARK(mt19937_throughput);
