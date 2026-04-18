@@ -1,0 +1,15 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "linux",
+            "hidden": false,
+            "cacheVariables": {
+				"CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+				"CMAKE_BUILD_TYPE": "Bench",
+				"CMAKE_CXX_COMPILER": "g++",
+				"CMAKE_CXX_FLAGS_BENCH": "-O3 -DNDEBUG -fno-unroll-loops -fno-exceptions -fno-rtti"
+            }
+        }
+    ]
+}      

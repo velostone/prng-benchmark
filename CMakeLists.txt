@@ -13,7 +13,7 @@ set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
 add_subdirectory(3rdparty/benchmark)
 
 add_executable(${PROJECT_NAME} 
-                    src/benchmark.cpp
+                    src/main.cpp
                     src/mcml_mcg59.cpp
 )
 
@@ -23,8 +23,4 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
     benchmark::benchmark
     Boost::random
-)
-
-target_compile_options(${PROJECT_NAME} PRIVATE 
-    -O3 -march=native
 )
