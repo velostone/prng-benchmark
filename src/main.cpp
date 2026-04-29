@@ -9,8 +9,9 @@
 #include "mcml_mcg59.h"
 #include "xoshiro256plus.hpp"
 #include "xoshiro256plusplus.hpp"
+#include "xoshiro128plus.hpp"
 
-#define THROUGHPUT
+#define LATENCY 
 
 constexpr int seed = 20260224;
 constexpr std::uint64_t N = 1e6;
@@ -173,6 +174,32 @@ static void xoshiro256pp_throughput(benchmark::State& state) {
   state.SetItemsProcessed(std::uint64_t(state.iterations()) * N);
 }
 
+static void xoshiro128plus_latency(benchmark::State& state) {
+
+  XoShiRo128Plus xoshiro(seed);
+
+  for (auto _ : state) {
+      auto val = xoshiro();
+      benchmark::DoNotOptimize(val);
+    }
+}
+
+static void xoshiro128plus_throughput(benchmark::State& state) {
+
+  XoShiRo128Plus xoshiro(seed);
+  std::vector<std::uint32_t> buffer(N);
+
+  for (auto _ : state) {
+    for (int i = 0; i < N; ++i) {
+      buffer[i] = xoshiro();
+    }
+    benchmark::DoNotOptimize(buffer.data());
+    benchmark::ClobberMemory();
+  }
+
+  state.SetItemsProcessed(std::uint64_t(state.iterations()) * N);
+}
+
 #ifdef LATENCY
 BENCHMARK(mt11213b_latency);
 BENCHMARK(taus88_latency);
@@ -180,6 +207,7 @@ BENCHMARK(mt19937_latency);
 BENCHMARK(mcg59_latency);
 BENCHMARK(xoshiro256plus_latency);
 BENCHMARK(xoshiro256pp_latency);
+BENCHMARK(xoshiro128plus_latency);
 #endif
 
 #ifdef THROUGHPUT
@@ -189,6 +217,7 @@ BENCHMARK(mt19937_throughput);
 BENCHMARK(mcg59_throughput);
 BENCHMARK(xoshiro256plus_throughput);
 BENCHMARK(xoshiro256pp_throughput);
+BENCHMARK(xoshiro128plus_throughput);
 #endif
 
 BENCHMARK_MAIN();
